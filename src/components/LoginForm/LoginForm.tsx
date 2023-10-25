@@ -13,7 +13,7 @@ type FormInputsType = {
   password: string;
 };
 
-export const LoginForm: FC<LoginFormProps> = () => {
+const LoginForm: FC<LoginFormProps> = () => {
   const [errorAuth, setErrorAuth] = useState<string | null>(null);
   const {
     register,
@@ -26,7 +26,6 @@ export const LoginForm: FC<LoginFormProps> = () => {
     setErrorAuth(null);
     const response = await signIn('credentials', {
       ...data,
-      callbackUrl: '/table',
       redirect: false,
     });
 
@@ -34,8 +33,9 @@ export const LoginForm: FC<LoginFormProps> = () => {
       setErrorAuth(
         'Sign in failed. Check the details you provided are correct.'
       );
-    } else if (response?.url) {
-      router.push(response.url);
+    } else {
+      router.refresh();
+      router.push('/table');
     }
   };
 
@@ -82,3 +82,5 @@ export const LoginForm: FC<LoginFormProps> = () => {
     </form>
   );
 };
+
+export default LoginForm;
